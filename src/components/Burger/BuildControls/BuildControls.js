@@ -19,13 +19,20 @@ const BuildControls = (props) => {
 
       {controls.map((ctrl) => (
         <BuildControl
-          ley={ctrl.label}
+          key={ctrl.label}
           label={ctrl.label}
           added={() => props.ingredientAdded(ctrl.type)}
           removed={() => props.ingredientRemoved(ctrl.type)}
           disabled={props.disabled[ctrl.type]}
         />
       ))}
+      <button
+        className={styles.orderButton}
+        disabled={!props.purchasable}
+        onClick={props.ordered}
+      >
+        ORDER NOW
+      </button>
     </div>
   );
 };
