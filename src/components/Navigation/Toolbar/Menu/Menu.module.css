@@ -1,0 +1,10 @@
+.menu {
+  cursor: pointer;
+}
+
+.menu div {
+  background-color: white;
+  width: 25px;
+  height: 3px;
+  margin: 5px;
+}
