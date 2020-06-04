@@ -8,3 +8,9 @@
   height: 3px;
   margin: 5px;
 }
+
+@media (min-width: 500px) {
+  .menu {
+    display: none;
+  }
+}
