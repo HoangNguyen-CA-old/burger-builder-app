@@ -11,6 +11,7 @@ const Input = (props) => {
           {...props.elementConfig}
           className={styles.InputElement}
           value={props.value}
+          onChange={props.changed}
         ></input>
       );
       break;
@@ -20,7 +21,23 @@ const Input = (props) => {
           {...props.elementConfig}
           className={styles.InputElement}
           value={props.value}
+          onChange={props.changed}
         ></textarea>
+      );
+      break;
+    case 'select':
+      inputElement = (
+        <select
+          className={styles.InputElement}
+          value={props.value}
+          onChange={props.changed}
+        >
+          {props.elementConfig.options.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.displayValue}
+            </option>
+          ))}
+        </select>
       );
       break;
     default:
@@ -29,6 +46,7 @@ const Input = (props) => {
           {...props.elementConfig}
           className={styles.InputElement}
           value={props.value}
+          onChange={props.changed}
         ></input>
       );
   }

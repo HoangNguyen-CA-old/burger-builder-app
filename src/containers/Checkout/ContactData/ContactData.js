@@ -28,15 +28,29 @@ export class ContactData extends Component {
       deliveryMethod: {
         elementType: 'select',
         elementConfig: {
-          otions: [
+          options: [
             { value: 'fastest', displayValue: 'Fastest' },
             { value: 'cheapest', displayValue: 'Cheapest' },
           ],
         },
+        value: '',
       },
     },
 
     loading: false,
+  };
+
+  inputChangedHandler = (e, inputId) => {
+    const updatedOrderForm = {
+      ...this.state.orderForm,
+    };
+
+    const updatedFormElement = { ...updatedOrderForm[inputId] };
+
+    updatedFormElement.value = e.target.value;
+
+    updatedOrderForm[inputId] = updatedFormElement;
+    this.setState({ orderForm: updatedOrderForm });
   };
 
   orderHandler = (event) => {
@@ -76,6 +90,7 @@ export class ContactData extends Component {
             elementType={formElement.config.elementType}
             elementConfig={formElement.config.elementConfig}
             value={formElement.config.value}
+            changed={(e) => this.inputChangedHandler(e, formElement.id)}
           />
         ))}
         <Button btnType='Success' clicked={this.orderHandler}>
