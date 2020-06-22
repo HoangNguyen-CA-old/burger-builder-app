@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
+import axios from '../../axios-orders';
+
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
-import axios from '../../axios-orders';
 import { connect } from 'react-redux';
-import * as actionTypes from '../../store/actions';
+import * as burgerBuilderActions from '../../store/actions/index';
 
 class BurgerBuilder extends Component {
   state = {
     purchasing: false,
-    loading: false,
-    error: false,
   };
 
   updatePurchaseState = (ingredients) => {
@@ -37,16 +36,8 @@ class BurgerBuilder extends Component {
   };
 
   componentDidMount() {
-    /*
-    axios
-      .get('/ingredients.json')
-      .then((res) => {
-        this.setState({ ingredients: res.data });
-      })
-      .catch((err) => {
-        this.setState({ error: true });
-      });
-      */
+    console.log('MOUNT');
+    this.props.onInitIngredients();
   }
 
   render() {
@@ -59,7 +50,7 @@ class BurgerBuilder extends Component {
 
     let orderSummary = null;
 
-    let burger = this.state.error ? (
+    let burger = this.props.error ? (
       <p>Ingredients can't be loaded</p>
     ) : (
       <Spinner></Spinner>
@@ -109,19 +100,15 @@ class BurgerBuilder extends Component {
 const mapStateToProps = (state) => ({
   ings: state.ingredients,
   price: state.totalPrice,
+  error: state.error,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   onIngredientAdded: (ingName) =>
-    dispatch({
-      type: actionTypes.ADD_INGREDIENTS,
-      ingredientName: ingName,
-    }),
+    dispatch(burgerBuilderActions.addIngredient(ingName)),
   onIngredientRemoved: (ingName) =>
-    dispatch({
-      type: actionTypes.REMOVE_INGREDIENTS,
-      ingredientName: ingName,
-    }),
+    dispatch(burgerBuilderActions.removeIngredient(ingName)),
+  onInitIngredients: () => dispatch(burgerBuilderActions.initIngredients()),
 });
 
 export default connect(
