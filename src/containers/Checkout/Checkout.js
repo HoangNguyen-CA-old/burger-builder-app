@@ -6,6 +6,8 @@ import ContactData from './ContactData/ContactData';
 
 import { connect } from 'react-redux';
 
+import { Redirect } from 'react-router-dom';
+
 export class Checkout extends Component {
   checkoutCancelledHandler = () => {
     this.props.history.goBack();
@@ -16,27 +18,28 @@ export class Checkout extends Component {
   };
 
   render() {
-    return (
-      <div>
-        {this.props.ings ? (
+    let summary = <Redirect to='/'></Redirect>;
+    if (this.props.ings) {
+      summary = (
+        <div>
           <CheckoutSummary
             ingredients={this.props.ings}
             checkoutCancelled={this.checkoutCancelledHandler}
             checkoutContinued={this.checkoutContinuedHandler}
           ></CheckoutSummary>
-        ) : null}
-
-        <Route
-          path={`${this.props.match.path}/contact-data`}
-          component={ContactData}
-        ></Route>
-      </div>
-    );
+          <Route
+            path={`${this.props.match.path}/contact-data`}
+            component={ContactData}
+          ></Route>
+        </div>
+      );
+    }
+    return <>{summary}</>;
   }
 }
 
 const mapStateToProps = (state) => ({
-  ings: state.ingredients,
+  ings: state.burgerBuilder.ingredients,
 });
 
 export default connect(mapStateToProps)(Checkout);
