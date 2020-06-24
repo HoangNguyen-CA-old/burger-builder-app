@@ -6,8 +6,14 @@ import Orders from './containers/Orders/Orders';
 import Auth from './containers/Auth/Auth';
 import Logout from './containers/Auth/Logout/Logout';
 
+import * as actions from './store/actions/index';
+
 import { Route, Switch } from 'react-router-dom';
-export default class App extends Component {
+import { connect } from 'react-redux';
+class App extends Component {
+  componentDidMount() {
+    this.props.onTryAutoSignup();
+  }
   render() {
     return (
       <div>
@@ -25,3 +31,11 @@ export default class App extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({});
+
+const mapDispatchToProps = (dispatch) => ({
+  onTryAutoSignup: () => dispatch(actions.authCheckState()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
